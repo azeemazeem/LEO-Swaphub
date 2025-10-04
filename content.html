@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO-SwapHub: The Zero-Knowledge Orbital Economy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1729 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.9) 0%, rgba(26, 31, 58, 0.7) 100%);
+            border-bottom: 2px solid #00d9ff;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #00d9ff;
+            margin-bottom: 15px;
+        }
+
+        .team {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .quote-section {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid #00d9ff;
+            padding: 30px;
+            margin: 40px 0;
+            font-style: italic;
+            font-size: 1.2em;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            text-align: center;
+            margin: 60px 0 40px;
+            background: linear-gradient(135deg, #ff6b6b, #00d9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .problem-grid, .solution-grid, .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(26, 31, 58, 0.8), rgba(15, 23, 41, 0.9));
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #00d9ff;
+            box-shadow: 0 12px 48px rgba(0, 217, 255, 0.4);
+        }
+
+        .card h3 {
+            color: #00d9ff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .solution-section {
+            background: linear-gradient(145deg, rgba(0, 217, 255, 0.05), rgba(0, 255, 136, 0.05));
+            padding: 60px 0;
+            margin: 60px 0;
+            border-radius: 20px;
+        }
+
+        .innovation-card {
+            background: linear-gradient(145deg, rgba(0, 217, 255, 0.15), rgba(0, 255, 136, 0.1));
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #00ff88;
+        }
+
+        .lcc-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ffd700);
+            color: #0a0e27;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 10px 5px;
+            font-size: 1.1em;
+        }
+
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            background: rgba(26, 31, 58, 0.8);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #00d9ff;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #0a0e27;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: #00d9ff;
+            margin-bottom: 8px;
+            font-size: 1.3em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .feature-item {
+            background: rgba(26, 31, 58, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .feature-item h4 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .impact-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .impact-card {
+            background: linear-gradient(145deg, rgba(255, 107, 107, 0.1), rgba(0, 217, 255, 0.1));
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .impact-card:hover {
+            border-color: #00d9ff;
+            transform: scale(1.05);
+        }
+
+        .impact-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .impact-card h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(145deg, rgba(0, 217, 255, 0.1), rgba(255, 107, 107, 0.1));
+            margin: 60px 0;
+            border-radius: 20px;
+        }
+
+        .cta-quote {
+            font-size: 1.4em;
+            font-style: italic;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #0a0e27;
+            padding: 18px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 217, 255, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            border-top: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .problem-grid, .solution-grid, .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">LEO-SwapHub</div>
+            <div class="tagline">The Zero-Knowledge Orbital Economy</div>
+            <div class="team">Team: MissionNova | Challenge: Commercializing Low Earth Orbit (LEO)</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="quote-section">
+            "The future of space is commercial, but it's crippled by one expensive reality: The cost of launching basic supplies from Earth. MissionNova solves this with LEO-Swap HyperMall, the first secure, decentralized market for resources already in orbit."
+        </div>
+
+        <h2>The Crippling Problem</h2>
+        <div class="problem-grid">
+            <div class="card">
+                <div class="card-icon">💸</div>
+                <h3>Massive Launch Costs</h3>
+                <p>Every kilogram of water, oxygen, or spare part costs an estimated <strong>$25,000 LCC</strong> to replace from Earth.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>Inventory Waste</h3>
+                <p>Stations run out of one thing (e.g., O₂) while having a surplus of another (e.g., 3D Filament). This surplus is a stranded asset.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🕵️</div>
+                <h3>Espionage & Trust</h3>
+                <p>Rival commercial stations cannot openly trade or share inventory data due to fear of commercial spying.</p>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <h2>The LEO-Swap Hub Solution</h2>
+            <div class="container">
+                <p style="text-align: center; font-size: 1.3em; margin-bottom: 40px;">
+                    A Centralized Digital Depot for co-orbiting commercial stations (CLDs) facilitating Zero-Knowledge Trade to convert stranded assets into vital resources.
+                </p>
+
+                <div class="innovation-card">
+                    <h3 style="color: #00ff88; font-size: 2em; margin-bottom: 20px;">Core Innovation: Zero-Knowledge Trade</h3>
+                    
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <h4>Zero-Knowledge Digital Ledger</h4>
+                            <p>HyperMall ensures complete anonymity by having stations buy from and sell to the Ledger, not directly to each other.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Secure Transactions</h4>
+                            <p>Transactions secured via Distributed Ledger Technology (DLT) / Orbital Trust Protocol.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>Cyber Defense</h4>
+                            <p>Displays resources in Risk Bands (Green/Yellow/Red status) instead of precise numbers, preventing competitive spying.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 40px;">
+                    <h3 style="font-size: 2em; text-align: center; margin-bottom: 25px;">Launch-Cost Credit (LCC) as Currency</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div>
+                            <h4 style="color: #00ff88; margin-bottom: 10px;">Definition</h4>
+                            <p>LCC is the digital valuation based on the equivalent cost to launch that mass from Earth.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #00ff88; margin-bottom: 10px;">LCC Value</h4>
+                            <p><span class="lcc-badge">1 kg = $25,000 LCC</span></p>
+                        </div>
+                        <div>
+                            <h4 style="color: #00ff88; margin-bottom: 10px;">Impact</h4>
+                            <p>The universal medium, proving the value of the swap is the value of the launch avoided.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>How It Works: The LEO-Swap Process</h2>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h4>Critical Need Alert</h4>
+                    <p>Station Alpha alerts HyperMall for 5kg of Filament. Alpha's "Survival Floor" is nearing depletion.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h4>Surplus Offer</h4>
+                    <p>Station Beta offers 10kg of surplus Oxygen to HyperMall for LCC credit. Automated Access Tug (AAT) scheduled.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h4>Initiate LEO-SWAP</h4>
+                    <p>User clicks "INITIATE LEO-SWAP" on dashboard. Anonymous transaction logged on Orbital Ledger.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h4>Automated Transfer</h4>
+                    <p>AAT receives optimized route (collect Oxygen from Beta, refuel, deliver Filament to Alpha). Physical transfer by robotic arms.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Critical Resources & Constraints</h2>
+        <div class="solution-grid">
+            <div class="card">
+                <h3>Simulated Data Inputs</h3>
+                <p>Hardcoded inventory and LCC values based on typical LEO mission budgets.</p>
+            </div>
+            <div class="card">
+                <h3>Fuel Management</h3>
+                <p>Hub accounts for AAT fuel cost (e.g., 0.5 kg Xenon per mission) in inventory, proving comprehensive asset management.</p>
+            </div>
+            <div class="card">
+                <h3>Survival Floor</h3>
+                <p>All stations maintain a digitally locked Minimum Crew Survival Requirement that cannot be traded.</p>
+            </div>
+        </div>
+
+        <h2>LEO-SwapHub: Security & Efficiency</h2>
+        <div class="solution-grid">
+            <div class="card">
+                <h3 style="color: #ff6b6b;">Security Enhancements</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 10px 0;">✓ Zero-Knowledge Protocol: Anonymity in transactions</li>
+                    <li style="margin: 10px 0;">✓ Risk Bands: Obfuscated inventory data to prevent espionage</li>
+                    <li style="margin: 10px 0;">✓ DLT / Orbital Trust Protocol: Immutable transaction records</li>
+                    <li style="margin: 10px 0;">✓ Survival Floor Lock: Non-tradable minimum resource levels</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="color: #00ff88;">Efficiency Drivers</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 10px 0;">✓ LCC Currency: Standardized valuation for seamless exchange</li>
+                    <li style="margin: 10px 0;">✓ AAT Optimization: Efficient delivery routes, minimizing fuel use</li>
+                    <li style="margin: 10px 0;">✓ Stranded Asset Conversion: Maximizing utility of existing orbital resources</li>
+                    <li style="margin: 10px 0;">✓ Reduced Earth Dependence: Lowering costly launches</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>The Unbeatable Impact: Quantitative Results</h2>
+        <div class="impact-section">
+            <div class="impact-card">
+                <div class="impact-icon">💰</div>
+                <h3>Economic Growth</h3>
+                <p>Every swap adds to the Total Launch Cost Saved, a direct revenue stream for the LEO economy.</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🌍</div>
+                <h3>Environmental Benefit</h3>
+                <p>Reduced need for Earth launches means significant reduction in launch-related carbon emissions.</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🛡️</div>
+                <h3>Strategic Resilience</h3>
+                <p>The HyperMall provides an in-orbit safety net, building resilience against critical failures for all commercial competitors.</p>
+            </div>
+        </div>
+
+        <h2>The HyperMall Advantage</h2>
+        <div class="advantages-grid">
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>Economic Prosperity</h3>
+                <p>Unlocking value from existing orbital assets.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔒</div>
+                <h3>Enhanced Security</h3>
+                <p>Zero-knowledge transactions and data protection.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Operational Efficiency</h3>
+                <p>Optimized logistics and resource allocation.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌱</div>
+                <h3>Environmental Stewardship</h3>
+                <p>Reducing the carbon footprint of space activities.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔗</div>
+                <h3>Interoperability</h3>
+                <p>A platform for all commercial LEO stations.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>MissionNova: Building the Orbital Future</h2>
+            <p class="cta-quote">
+                "LEO-SwapHub is the blueprint for a truly sustainable, secure, and profitable LEO economy. We didn't just design a business model; we built the digital platform that makes orbital commerce thrive by valuing what we save."
+            </p>
+            <a href="#" class="cta-button">Join the Orbital Revolution</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MissionNova | LEO-SwapHub | Building the Future of Orbital Commerce</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Smooth scroll for CTA button
+        document.querySelector('.cta-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
